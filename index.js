@@ -110,10 +110,6 @@ var sendMailUsingTemplate = function(
         })
 }
 
-sendMailUsingTemplate('bec398c7-dbae-4683-bffa-df756e082158', '10736', 'noreply@clappia.com', 'Clappia', ['sarthak@clappia.com'], 
-undefined, undefined, 'Test mail',
-{'name': 'John', 'workplace_name':'WP'}, ['s3://clappia-nft-processed/pdfs/d.pdf']).then((res) => {console.log(res);}, (err) => {console.log(err)});
-
 exports.sendMailUsingTemplate = sendMailUsingTemplate;
 exports.uploadAttachment = uploadAttachment;
  
