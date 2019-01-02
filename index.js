@@ -1,7 +1,6 @@
 const request = require('request-promise');
 const fs = require('fs');
 const S3Accessor = require('./accessors/s3-accessor');
-const got = require('got');
 const FormData = require('form-data');
 
 let s3Accessor = new S3Accessor();
@@ -26,15 +25,24 @@ const TEMP_DIR = '/tmp/';
 var uploadAttachment = function(apiKey, name, stream) {
     var url = UPLOAD_FILE_URL + "?" + API_KEY + "=" + apiKey + "&" + ATTACHMENT_NAME + "=" + name;    
     let form = new FormData();
+    form.maxDataSize = Infinity;
     form.append('file', stream);
-    return got.put(url, {body: form}).then((res) => {
+    return request.post({url: url, formData: {
+        file: {
+            value: stream,
+            options: {
+                filename: name,
+            }
+        }
+    }}).then((out) => {
         try {
-            res = JSON.parse(res.body);
+            res = JSON.parse(out);
         } catch (error) {
-            console.error("Invalid response from ElasticEmail while uploading Attachments", error);
+            console.error("Invalid response from ElasticEmail while uploading Attachments", error, out);
             return Promise.reject("Invalid response from ElasticEmail while uploading Attachments");
         }
         if (res.success === false) {
+            console.error("Invalid response from ElasticEmail while uploading Attachments", out.body);
             return Promise.reject("Invalid response from ElasticEmail while uploading Attachments");
         }
         console.log("Uploaded", name);
@@ -74,7 +82,7 @@ var sendMailUsingTemplate = function(
                 getAttachmentPromises.push(s3Accessor.getFile(s3Bucket, s3Key).then((data) => {
                     fs.writeFileSync(tempFilePath, data.Body);
                     return uploadAttachment(
-                        apiKey, fileName, fs.readFileSync(tempFilePath)).then((res) => {
+                        apiKey, fileName, fs.createReadStream(tempFilePath)).then((res) => {
                             return res;
                         }, (err) => {
                             return Promise.reject(err);
@@ -112,4 +120,3 @@ var sendMailUsingTemplate = function(
 
 exports.sendMailUsingTemplate = sendMailUsingTemplate;
 exports.uploadAttachment = uploadAttachment;
- 
