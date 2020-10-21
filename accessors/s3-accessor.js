@@ -10,7 +10,7 @@ module.exports = class S3Accessor {
         var [_, s3Bucket, s3Key] = s3Path.match(S3_PATH_REGEX);
         var s3KeyParts = s3Key.split("/");
         var fileName = s3KeyParts[s3KeyParts.length-1];
-        return [s3Bucket, s3Key, fileName];
+        return [s3Bucket, s3Key, fileName.replace(/&/g, ' ')];
     }
     getFile(s3Bucket, s3Key) {
         return this.s3.getObject({

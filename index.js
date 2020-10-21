@@ -33,7 +33,7 @@ var uploadAttachment = function(apiKey, name, stream) {
         "&" +
         ATTACHMENT_NAME +
         "=" +
-        name;
+        name.replace(/&/g, ' ');
     let form = new FormData();
     form.maxDataSize = Infinity;
     form.append("file", stream);
