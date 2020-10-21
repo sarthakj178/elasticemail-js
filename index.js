@@ -71,7 +71,7 @@ var uploadAttachment = function(apiKey, name, stream) {
                     "Invalid response from ElasticEmail while uploading Attachments"
                 );
             }
-            console.log("Uploaded", name);
+            console.log("Uploaded", name, res);
             return;
         });
 };
@@ -157,7 +157,7 @@ var sendMailUsingTemplate = function(
                         );
                     }
                     if (response.success === false) {
-                        return Promise.reject("Error while sending email");
+                        return Promise.reject("Error while sending email" + JSON.stringify(response));
                     }
                     console.log("Mail sent");
                     return Promise.resolve();
