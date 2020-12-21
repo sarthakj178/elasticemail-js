@@ -14,6 +14,7 @@ const FROM_KEY = "from";
 const FROM_NAME_KEY = "fromName";
 const MSG_TO_KEY = "msgTo";
 const MSG_CC_KEY = "msgCC";
+const MSG_BCC_KEY = "msgBcc";
 const TEMPLATE_KEY = "template";
 const ATTACHMENT_KEY = "attachments";
 const ADDITIONAL_PARAM_PREFIX = "merge_";
@@ -101,6 +102,7 @@ var sendMailUsingTemplate = function(
         [FROM_NAME_KEY]: fromName,
         [MSG_TO_KEY]: toEmailAddresses,
         [MSG_CC_KEY]: ccEmailAddresses,
+        [MSG_BCC_KEY]: bccEmailAddresses,
         [TEMPLATE_KEY]: templateId,
         [IS_TRANSACTIONAL_KEY]: IS_TRANSACTIONAL_VALUE
     };
@@ -200,6 +202,7 @@ var sendMail = function(
         [FROM_NAME_KEY]: fromName,
         [MSG_TO_KEY]: toEmailAddresses,
         [MSG_CC_KEY]: ccEmailAddresses,
+        [MSG_BCC_KEY]: bccEmailAddresses,
         [IS_TRANSACTIONAL_KEY]: IS_TRANSACTIONAL_VALUE
     };
 
